@@ -16,6 +16,6 @@ public:
 	
 private:
 	int* m_arr;
-	int m_count = -1;
+	int m_idx = -1;
 	int m_capacity = 0;
 };
