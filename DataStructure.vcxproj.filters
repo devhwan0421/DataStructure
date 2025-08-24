@@ -30,5 +30,13 @@
     <ClCompile Include="Stack.cpp">
       <Filter>소스 파일\DataStructure</Filter>
     </ClCompile>
+    <ClCompile Include="Queue.cpp">
+      <Filter>소스 파일\DataStructure</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Queue.h">
+      <Filter>소스 파일\DataStructure</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

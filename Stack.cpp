@@ -26,13 +26,9 @@ Stack::~Stack() {
 }
 
 bool Stack::Reserve(int capacity) {
-	if (m_capacity > capacity)	//기존 공간 보다 작은 값으로 변경하고자 하는 경우 false 반환
+	if (m_capacity > capacity || capacity > INT_MAX)	//유효값 체크
 		return false;
 
-	if (m_capacity > INT_MAX / 2)	//m_capacity 오버플로우 방지
-	{
-		return false;
-	}
 	void* tmp = realloc(m_arr, sizeof(int) * capacity);
 	if (!tmp)
 		return false;
