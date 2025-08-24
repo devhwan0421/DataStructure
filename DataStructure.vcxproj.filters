@@ -53,5 +53,8 @@
     <ClInclude Include="LinkedList.h">
       <Filter>소스 파일\DataStructure\LinkedList</Filter>
     </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>소스 파일\DataStructure\LinkedList</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

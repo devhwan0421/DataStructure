@@ -3,7 +3,7 @@
 
 class LinkedList : public IDataStructure {
 public:
-
+	void* GetNode();
 private:
 	int* head;
 };

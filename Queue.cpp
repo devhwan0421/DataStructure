@@ -2,15 +2,17 @@
 
 Queue::Queue() : m_arr(nullptr), m_size(0), m_capacity(0), m_front(0), m_rear(0) {}
 
-Queue::Queue(const Queue& other) : m_size(other.m_size), m_capacity(other.m_capacity), m_front(other.m_front), m_rear(other.m_rear) {
-	m_arr = static_cast<int*>(malloc(sizeof(int) * m_capacity));
-	if (!m_arr)
-		throw std::bad_alloc();
-	for (int i = 0; i < m_size; i++)
+Queue::Queue(const Queue& other) : m_arr(nullptr), m_size(other.m_size), m_capacity(other.m_capacity), m_front(0), m_rear(other.m_size) {
+	if (other.m_capacity > 0)
 	{
-		int front = (other.m_front + i) % m_capacity;
-		m_arr[i] = other.m_arr[front];
-		printf(" m_arr[%d] : %d\n", i, other.m_arr[front]);
+		m_arr = static_cast<int*>(malloc(sizeof(int) * other.m_capacity));
+		if (!m_arr) throw std::bad_alloc();
+		for (int i = 0; i < other.m_size; i++)
+		{
+			int front = (other.m_front + i) % other.m_capacity;
+			m_arr[i] = other.m_arr[front];
+			printf(" m_arr[%d] : %d\n", i, other.m_arr[front]);
+		}
 	}
 	printf("\n");
 }
@@ -25,8 +27,55 @@ Queue::Queue(Queue&& other) noexcept : m_arr(other.m_arr), m_size(other.m_size)
 }
 
 Queue::~Queue() {
-	if (!m_arr)
-		free(m_arr);
+	if (m_arr) free(m_arr);
+}
+
+Queue& Queue::operator=(const Queue& other) {
+	if (this == &other) return *this;
+
+	int* tmp = nullptr;
+	if (other.m_capacity > 0)
+	{
+		tmp = static_cast<int*>(malloc(sizeof(int) * other.m_capacity));
+		if (!tmp)
+			throw std::bad_alloc();
+		for (int i = 0; i < other.m_size; i++)
+		{
+			int front = (other.m_front + i) % other.m_capacity;
+			tmp[i] = other.m_arr[front];
+			printf(" tmp[%d] : %d\n", i, other.m_arr[front]);
+		}
+	}
+	printf("\n");
+
+	if (m_arr) free(m_arr);
+	m_arr = tmp;
+	m_size = other.m_size;
+	m_capacity = other.m_capacity;
+	m_front = 0;
+	m_rear = m_size;
+
+	return *this;
+}
+
+Queue& Queue::operator=(Queue&& other) noexcept {
+	if (this == &other) return *this;
+
+	if (m_arr) free(m_arr);
+
+	m_arr = other.m_arr;
+	m_size = other.m_size;
+	m_capacity = other.m_capacity;
+	m_front = other.m_front;
+	m_rear = other.m_rear;
+
+	other.m_arr = nullptr;
+	other.m_size = 0;
+	other.m_capacity = 0;
+	other.m_front = 0;
+	other.m_rear = 0;
+
+	return *this;
 }
 
 bool Queue::Grow() {
@@ -34,17 +83,14 @@ bool Queue::Grow() {
 	{
 		m_capacity = 5;
 		int* tmp = static_cast<int*>(malloc(sizeof(int) * m_capacity));
-		if (!tmp)
-			return false;
+		if (!tmp) return false;
 		m_arr = tmp;
 	}
 	else
 	{
-		if (m_capacity > INT_MAX / 2) // int형의 최대에 도달했을 경우 오버플로우 방지
-			return false;
+		if (m_capacity > INT_MAX / 2) return false;	// int형의 최대에 도달했을 경우 오버플로우 방지
 		int* tmp = static_cast<int*>(malloc(sizeof(int) * m_capacity * 2));
-		if (!tmp)
-			return false;
+		if (!tmp) return false;
 
 		printf(" --> Grow() : front init 0\n   Queue Data :\n");
 		for (int i = 0; i < m_size; i++)	//원형큐이므로 재할당시 이전 데이터를 복사하여 처음부터 재입력 필요
@@ -71,19 +117,16 @@ bool Queue::Reserve(int capacity) {
 	{
 		m_capacity = capacity;
 		int* tmp = static_cast<int*>(malloc(sizeof(int) * m_capacity));
-		if (!tmp)
-			return false;
+		if (!tmp) return false;
 		m_arr = tmp;
 	}
 	else
 	{
-		if (m_capacity > capacity || capacity > INT_MAX) // int형의 최대에 도달했을 경우 오버플로우 방지
-			return false;
+		if (m_capacity > capacity || capacity > INT_MAX) return false;	// int형의 최대에 도달했을 경우 오버플로우 방지
 		int* tmp = static_cast<int*>(malloc(sizeof(int) * capacity));
-		if (!tmp)
-			return false;
+		if (!tmp) return false;
 
-		printf(" --> Grow() : front init 0\n   Queue Data :\n");
+		printf(" --> Reserve() : front init 0\n   Queue Data :\n");
 		for (int i = 0; i < m_size; i++)	//원형큐이므로 재할당시 이전 데이터를 복사하여 처음부터 재입력 필요
 		{
 			int front = (m_front + i) % m_capacity;
@@ -122,8 +165,7 @@ bool Queue::EnQueue(int value) {
 }
 
 std::optional<int> Queue::DeQueue() {
-	if (isEmpty())
-		return std::nullopt;
+	if (isEmpty()) return std::nullopt;
 	
 	m_front = m_front % m_capacity;
 	m_size--;
@@ -215,4 +257,12 @@ void Queue::RunTestCase() {
 
 	printf("\n###[c.DeQueue]\n");
 	c.DeQueue();
+
+	printf("\n###[d->EnQueue] 1 ~ 2 \n");
+	Queue d;
+	d.EnQueue(1);
+	d.EnQueue(2);
+
+	printf("\n###[c = d]\n");
+	c = d;
 }

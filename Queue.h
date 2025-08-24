@@ -11,6 +11,10 @@ public:
 	Queue(Queue&& other) noexcept;
 	~Queue();
 
+	Queue& operator=(const Queue& other);
+	Queue& operator=(Queue&& other) noexcept;
+
+
 	bool EnQueue(int value);
 	std::optional<int> DeQueue();
 	std::optional<int> Peek();
