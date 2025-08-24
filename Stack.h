@@ -1,21 +1,28 @@
 #include "IDataStructure.h"
+#include <iostream>
+#include <optional>
 
 class Stack : public IDataStructure {
 public:
-	Stack(int initSize = 10);
+	Stack();
+	Stack(const Stack& other);
+	Stack(Stack&& other) noexcept;
 	~Stack();
-	bool ReSize();
+	
+	bool Reserve(int capacity);
 	bool IsEmpty();
 	bool IsFull();
 	int Size();
-	int Top();
+	std::optional<int> Top();
 	bool Push(int value);
 	int Pop();
 	void PrintStack();
 	void RunTestCase();
 	
 private:
+	bool Grow();
+
 	int* m_arr;
-	int m_idx = -1;
-	int m_capacity = 0;
+	int m_size;
+	int m_capacity;
 };

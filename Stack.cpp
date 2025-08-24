@@ -1,51 +1,75 @@
 #include "Stack.h"
-#include <iostream>
 
-Stack::Stack(int initSize) {
-	if (initSize <= 0)
-	{
-		initSize = 1;
-	}
+Stack::Stack() : m_arr(nullptr), m_size(-1), m_capacity(0) { } //생성자는 기본 초기화만 시키는 게 좋겠다 생각하여 메모리 할당 부분 제거함.
 
-	m_arr = (int*)malloc((sizeof(int) * initSize));
-	if (!m_arr)
-	{
-		//예외에 그냥 문자열을 넘겨줘도 되지만 상위 코드에서 캐치해서 쓰기 위해서는 이 방법이 좀 더 좋아보임
+Stack::Stack(const Stack& other) : m_size(other.m_size), m_capacity(other.m_capacity) {
+	void* tmp = malloc((sizeof(int) * m_capacity));
+	m_arr = static_cast<int*>(tmp);
+	if (!m_arr)	//메모리 부족으로 할당 실패시 예외 발생
 		throw std::bad_alloc();
-	}
-	m_capacity = initSize;
 
-	//new 연산을 쓰면 실패시 자동으로 std::bad_alloc 예외를 던진다.
-	//new를 쓰지 않고 malloc을 사용하였기 때문에 직접 구현이 필요
+	for (int i = 0; i <= m_size; i++)
+	{
+		m_arr[i] = other.m_arr[i];
+	}
+}
+
+Stack::Stack(Stack&& other) noexcept : m_arr(other.m_arr), m_size(other.m_size), m_capacity(other.m_capacity) {
+	other.m_arr = nullptr;
+	other.m_size = -1;
+	other.m_capacity = 0;
 }
 
 Stack::~Stack() {
-	free(m_arr);
+	if (m_arr)	//m_arr에 할당된 메모리가 있을 경우에만 메모리 해제
+		free(m_arr);
 }
 
-bool Stack::ReSize() {
-	if (m_capacity > INT_MAX / 2)
-	{
-		printf("Stack capacity is Max!\n");
+bool Stack::Reserve(int capacity) {
+	if (m_capacity > capacity)	//기존 공간 보다 작은 값으로 변경하고자 하는 경우 false 반환
 		return false;
-	}
 
-	int* tmp = m_arr;
-	m_arr = (int*)realloc(m_arr, sizeof(int) * m_capacity * 2);
-	if (m_arr == NULL)
+	if (m_capacity > INT_MAX / 2)	//m_capacity 오버플로우 방지
 	{
-		//메모리 부족이나 기타 이유로 재할당을 실패 하였을 때 NULL 반환
-		//null을 반환하였으므롤 m_arr은 기존 주소를 잃어버림
-		//이를 방지하기 위해서는 기존의 m_arr 포인터를 tmp에 저장 후 복구 시켜줘야 함
-		m_arr = tmp;
 		return false;
 	}
-	m_capacity *= 2;
+	void* tmp = realloc(m_arr, sizeof(int) * capacity);
+	if (!tmp)
+		return false;
+	m_arr = static_cast<int*>(tmp);	//강제 형변환이 아닌 좀 더 안정적인 방법
+	m_capacity = capacity;
+
+	return true;
+}
+
+bool Stack::Grow() {
+	void* tmp = nullptr;
+
+	if (m_capacity == 0) {
+		tmp = malloc(sizeof(int));
+		m_arr = static_cast<int*>(tmp);
+		m_capacity = 1;
+	}
+	else
+	{
+		if (m_capacity > INT_MAX / 2)
+		{
+			printf("Stack capacity is Max!\n");
+			return false;
+		}
+
+		tmp = realloc(m_arr, sizeof(int) * m_capacity * 2);
+		if (tmp == NULL) //메모리 부족이나 기타 이유로 재할당을 실패 하였을 때 NULL 반환함
+			return false;
+
+		m_arr = static_cast<int*>(tmp);
+		m_capacity *= 2;
+	}
 	return true;
 }
 
 bool Stack::IsEmpty() {
-	if (m_idx != -1)
+	if (m_size != -1)
 	{
 		return false;
 	}
@@ -53,7 +77,7 @@ bool Stack::IsEmpty() {
 }
 
 bool Stack::IsFull() {
-	if (m_idx != (m_capacity-1))
+	if (m_size != (m_capacity-1))	//Empty일 경우에도 full로 표기 됨
 	{
 		return false;
 	}
@@ -61,28 +85,28 @@ bool Stack::IsFull() {
 }
 
 int Stack::Size() {
-	return m_idx+1;
+	return m_size+1;
 }
 
-int Stack::Top() {
+std::optional<int> Stack::Top() {	//c++ 17에 추가된 기능이라 함.
 	if (IsEmpty())
 	{
 		printf("Stack is Empty!\n");
-		return -1;
+		return std::nullopt;
 	}
-	return m_arr[m_idx];
+	return m_arr[m_size];
 }
 
 bool Stack::Push(int value) {
-	if (IsFull())
+	if (IsFull() || m_capacity == 0)
 	{
-		if (!ReSize())
+		if (!Grow())
 		{
 			printf("ReSize() failed!\n");
 			return false;
 		}
 	}
-	m_arr[++m_idx] = value;
+	m_arr[++m_size] = value;
 
 	return true;
 }
@@ -93,13 +117,13 @@ int Stack::Pop() {
 		printf("Stack is Empty!\n");
 		return -1;
 	}
-	int tmp = m_arr[m_idx--];
+	int tmp = m_arr[m_size--];
 
 	return tmp;
 }
 
 void Stack::PrintStack() {
-	int idx = m_idx;
+	int idx = m_size;
 
 	printf("printStack() : ");
 	for (int i = idx; i >= 0; i--)
@@ -111,7 +135,7 @@ void Stack::PrintStack() {
 
 void Stack::RunTestCase() {
 	printf("isEmpty() : %s\n", IsEmpty() ? "true" : "false");
-	printf("m_idx : %d\n", Size());
+	printf("m_size : %d\n", Size());
 	printf("m_capacity : %d\n", m_capacity);
 	printf("pop() : %d\n", Pop());
 	printf("\n");
@@ -119,12 +143,12 @@ void Stack::RunTestCase() {
 	printf("push() : 1\n"); Push(1);
 	printf("push() : 2\n"); Push(2);
 	printf("push() : 3\n"); Push(3);
-	printf("m_idx : %d\n", Size());
+	printf("m_size : %d\n", Size());
 	PrintStack();
 	printf("\n");
 
 	printf("pop() : %d\n", Pop());
-	printf("m_idx : %d\n", Size());
+	printf("m_size : %d\n", Size());
 	PrintStack();
 	printf("\n");
 	
@@ -139,7 +163,7 @@ void Stack::RunTestCase() {
 	printf("push() : 8\n"); Push(8);
 	printf("push() : 9\n"); Push(9);
 	printf("push() : 10\n"); Push(10);
-	printf("m_idx : %d\n", Size());
+	printf("m_size : %d\n", Size());
 	PrintStack();
 	printf("\n");
 
@@ -147,8 +171,14 @@ void Stack::RunTestCase() {
 	printf("\n");
 
 	printf("push() : 11\n"); Push(11);
-	printf("m_idx : %d\n", Size());
+	printf("m_size : %d\n", Size());
 	printf("m_capacity : %d\n", m_capacity);
+	PrintStack();
+	printf("\n");
+
+	Stack b = *this;
+	Stack c = std::move(*this);
+	b.PrintStack();
 	PrintStack();
 	printf("\n");
 }
