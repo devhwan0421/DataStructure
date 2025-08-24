@@ -16,6 +16,15 @@
     <Filter Include="소스 파일\DataStructure">
       <UniqueIdentifier>{aa11f695-44bb-4032-8519-855d6fd1d814}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\DataStructure\Queue">
+      <UniqueIdentifier>{9e9945a1-919b-420a-a0ea-fa4fe8929bd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\DataStructure\Stack">
+      <UniqueIdentifier>{7af1b719-d6d8-4fb9-b043-363b3bc4408c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\DataStructure\LinkedList">
+      <UniqueIdentifier>{30b72c1f-1ce6-4235-a84d-4bb3b7782472}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -25,18 +34,24 @@
       <Filter>소스 파일\DataStructure</Filter>
     </ClCompile>
     <ClCompile Include="Stack.h">
-      <Filter>소스 파일\DataStructure</Filter>
+      <Filter>소스 파일\DataStructure\Stack</Filter>
     </ClCompile>
     <ClCompile Include="Stack.cpp">
-      <Filter>소스 파일\DataStructure</Filter>
+      <Filter>소스 파일\DataStructure\Stack</Filter>
     </ClCompile>
     <ClCompile Include="Queue.cpp">
-      <Filter>소스 파일\DataStructure</Filter>
+      <Filter>소스 파일\DataStructure\Queue</Filter>
+    </ClCompile>
+    <ClCompile Include="LinkedList.cpp">
+      <Filter>소스 파일\DataStructure\LinkedList</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Queue.h">
-      <Filter>소스 파일\DataStructure</Filter>
+      <Filter>소스 파일\DataStructure\Queue</Filter>
+    </ClInclude>
+    <ClInclude Include="LinkedList.h">
+      <Filter>소스 파일\DataStructure\LinkedList</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

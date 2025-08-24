@@ -42,7 +42,7 @@ bool Queue::Grow() {
 	{
 		if (m_capacity > INT_MAX / 2) // int형의 최대에 도달했을 경우 오버플로우 방지
 			return false;
-		int* tmp = static_cast<int*>(realloc(m_arr, sizeof(int) * m_capacity * 2));
+		int* tmp = static_cast<int*>(malloc(sizeof(int) * m_capacity * 2));
 		if (!tmp)
 			return false;
 
@@ -55,6 +55,7 @@ bool Queue::Grow() {
 		}
 		printf(" -----------Grow and Copy End-----------\n");
 
+		free(m_arr);
 		m_arr = tmp;
 		m_front = 0;
 		m_rear = m_size;
@@ -66,36 +67,51 @@ bool Queue::Grow() {
 }
 
 bool Queue::Reserve(int capacity) {
-	if (m_capacity > capacity || capacity > INT_MAX)	//유효값 체크
-		return false;
+	if (m_capacity == 0)
+	{
+		m_capacity = capacity;
+		int* tmp = static_cast<int*>(malloc(sizeof(int) * m_capacity));
+		if (!tmp)
+			return false;
+		m_arr = tmp;
+	}
+	else
+	{
+		if (m_capacity > capacity || capacity > INT_MAX) // int형의 최대에 도달했을 경우 오버플로우 방지
+			return false;
+		int* tmp = static_cast<int*>(malloc(sizeof(int) * capacity));
+		if (!tmp)
+			return false;
 
-	void* tmp = realloc(m_arr, sizeof(int) * capacity);
-	if (!tmp)
-		return false;
-	m_arr = static_cast<int*>(tmp);
-	m_capacity = capacity;
+		printf(" --> Grow() : front init 0\n   Queue Data :\n");
+		for (int i = 0; i < m_size; i++)	//원형큐이므로 재할당시 이전 데이터를 복사하여 처음부터 재입력 필요
+		{
+			int front = (m_front + i) % m_capacity;
+			tmp[i] = m_arr[front];
+			printf("     tmp[%d] : %d\n", i, tmp[i]);
+		}
+		printf(" -----------Grow and Copy End-----------\n");
+
+		free(m_arr);
+		m_arr = tmp;
+		m_front = 0;
+		m_rear = m_size;
+		m_capacity = capacity;
+	}
 
 	return true;
 }
 
 bool Queue::isEmpty() {
-	if (m_size != 0)
-		return false;
-	return true;
+	return m_size == 0;
 }
 
 bool Queue::isFull() {
-	if (m_size != m_capacity)
-		return false;
-	return true;
+	return m_size == m_capacity;
 }
 
 bool Queue::EnQueue(int value) {
-	if (isFull())
-	{
-		if (!Grow())	//재할당 실패시 false 반환
-			return false;
-	}
+	if (isFull() && !Grow()) return false; //재할당 실패서 false 반환
 	
 	m_rear = m_rear % m_capacity;
 	printf(" EnQueue() : %d, rear : %d\n", value, m_rear);
@@ -116,7 +132,8 @@ std::optional<int> Queue::DeQueue() {
 }
 
 std::optional<int> Queue::Peek() {
-	return m_arr[m_front];
+	if (isEmpty()) return std::nullopt;
+	return m_arr[m_front % m_capacity];
 }
 
 void Queue::RunTestCase() {
