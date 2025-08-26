@@ -221,11 +221,6 @@ void LinkedList::RunTestCase() {
 	else
 		printf("At(5) : none\n");
 
-	if (auto v6 = At(6); v6.has_value())
-		printf("At(6) : %d\n", *v6);
-	else
-		printf("At(6) : none\n");
-
 	Clear();
 	Print();
 }
