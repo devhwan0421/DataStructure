@@ -1,4 +1,4 @@
-#include "Stack.h"
+#include "Stack/Stack.h"
 
 Stack::Stack() : m_arr(nullptr), m_size(-1), m_capacity(0) { } //생성자는 기본 초기화만 시키는 게 좋겠다 생각하여 메모리 할당 부분 제거함.
 

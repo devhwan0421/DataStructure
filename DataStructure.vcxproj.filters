@@ -25,36 +25,48 @@
     <Filter Include="소스 파일\DataStructure\LinkedList">
       <UniqueIdentifier>{30b72c1f-1ce6-4235-a84d-4bb3b7782472}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\DataStructure\Tree">
+      <UniqueIdentifier>{b7afb87d-a2c9-4d0b-8eef-4585012d6946}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="src\main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="IDataStructure.h">
+    <ClCompile Include="include\IDataStructure.h">
       <Filter>소스 파일\DataStructure</Filter>
     </ClCompile>
-    <ClCompile Include="Stack.h">
+    <ClCompile Include="include\Stack\Stack.h">
       <Filter>소스 파일\DataStructure\Stack</Filter>
     </ClCompile>
-    <ClCompile Include="Stack.cpp">
+    <ClCompile Include="src\Stack\Stack.cpp">
       <Filter>소스 파일\DataStructure\Stack</Filter>
     </ClCompile>
-    <ClCompile Include="Queue.cpp">
+    <ClCompile Include="src\Queue\Queue.cpp">
       <Filter>소스 파일\DataStructure\Queue</Filter>
     </ClCompile>
-    <ClCompile Include="LinkedList.cpp">
+    <ClCompile Include="src\LinkedList\LinkedList.cpp">
       <Filter>소스 파일\DataStructure\LinkedList</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HashTable\HashTable.cpp">
+      <Filter>소스 파일\DataStructure\Tree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Queue.h">
+    <ClInclude Include="include\Queue\Queue.h">
       <Filter>소스 파일\DataStructure\Queue</Filter>
     </ClInclude>
-    <ClInclude Include="LinkedList.h">
+    <ClInclude Include="include\LinkedList\LinkedList.h">
       <Filter>소스 파일\DataStructure\LinkedList</Filter>
     </ClInclude>
-    <ClInclude Include="Node.h">
+    <ClInclude Include="include\LinkedList\Node.h">
       <Filter>소스 파일\DataStructure\LinkedList</Filter>
+    </ClInclude>
+    <ClInclude Include="include\HashTable\HashTable.h">
+      <Filter>소스 파일\DataStructure\Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="include\HashTable\Entry.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

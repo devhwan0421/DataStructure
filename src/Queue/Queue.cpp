@@ -1,4 +1,4 @@
-#include "Queue.h"
+#include "Queue/Queue.h"
 
 Queue::Queue() : m_arr(nullptr), m_size(0), m_capacity(0), m_front(0), m_rear(0) {}
 
