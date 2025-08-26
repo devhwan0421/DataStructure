@@ -1,4 +1,4 @@
-#include "LinkedList.h"
+#include "LinkedList/LinkedList.h"
 
 LinkedList::LinkedList() : m_head(nullptr), m_tail(nullptr), m_size(0){}
 
