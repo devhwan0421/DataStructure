@@ -9,15 +9,17 @@ public:
 	HashTable();
 	~HashTable();
 
+	void ReHash();
+
 	int HashFunction(int key);
+	int FindSlot(int key);
 
-	bool Insert(int key, int value, int prob = 0);
-	void LinearProbing(int key, int value);
-
+	void Set(int key, int value);
+	void Insert(int key, int value);
+	void Remove(int key);
 	std::optional<Entry*> Search(int key);
 
 	void Print() const;
-
 	void RunTestCase();
 
 private:
