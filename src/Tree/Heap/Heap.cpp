@@ -1,4 +1,4 @@
-#include "Tree/Heap.h"
+#include "Tree/Heap/Heap.h"
 
 Heap::Heap() {}
 

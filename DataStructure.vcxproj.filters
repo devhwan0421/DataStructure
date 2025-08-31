@@ -51,7 +51,10 @@
     <ClCompile Include="src\HashTable\HashTable.cpp">
       <Filter>소스 파일\DataStructure\Tree</Filter>
     </ClCompile>
-    <ClCompile Include="src\Tree\Heap.cpp">
+    <ClCompile Include="src\Tree\Heap\Heap.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tree\BST\BinarySearchTree.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -71,7 +74,13 @@
     <ClInclude Include="include\HashTable\Entry.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="include\Tree\Heap.h">
+    <ClInclude Include="include\Tree\Heap\Heap.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Tree\BST\BinarySearchTree.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Tree\BST\Node.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
