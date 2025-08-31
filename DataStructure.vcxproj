@@ -136,6 +136,7 @@
     <ClCompile Include="src\Stack\Stack.cpp" />
     <ClCompile Include="include\Stack\Stack.h" />
     <ClCompile Include="src\HashTable\HashTable.cpp" />
+    <ClCompile Include="src\Tree\Heap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\HashTable\Entry.h" />
@@ -143,6 +144,7 @@
     <ClInclude Include="include\LinkedList\Node.h" />
     <ClInclude Include="include\Queue\Queue.h" />
     <ClInclude Include="include\HashTable\HashTable.h" />
+    <ClInclude Include="include\Tree\Heap.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

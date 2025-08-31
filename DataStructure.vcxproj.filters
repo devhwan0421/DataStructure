@@ -51,6 +51,9 @@
     <ClCompile Include="src\HashTable\HashTable.cpp">
       <Filter>소스 파일\DataStructure\Tree</Filter>
     </ClCompile>
+    <ClCompile Include="src\Tree\Heap.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Queue\Queue.h">
@@ -66,6 +69,9 @@
       <Filter>소스 파일\DataStructure\Tree</Filter>
     </ClInclude>
     <ClInclude Include="include\HashTable\Entry.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Tree\Heap.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
