@@ -49,3 +49,58 @@ Node* BST::Insert(int key) {
 		return nullptr;
 	}
 }
+
+Node* BST::Search(int key) {
+	Node* node = FindLocation(key);
+	return node;
+}
+
+void BST::Remove(int key) {
+	Node* node = FindLocation(key);
+	if (!node || node->m_key != key) return;
+
+	Node* parent_node = node->m_parent_node;
+	Node* left_node = node->m_left_node;
+	Node* right_node = node->m_right_node;
+
+	if (!left_node)
+	{
+		if (!parent_node)
+		{
+			m_root = right_node;
+			if (m_root) m_root->m_parent_node = nullptr;
+		}
+		else
+		{
+			if (parent_node->m_left_node == node) parent_node->m_left_node = right_node;
+			if (parent_node->m_right_node == node) parent_node->m_right_node = right_node;
+			if (right_node) right_node->m_parent_node = parent_node;
+		}
+		delete node;
+		m_size--;
+		return;
+	}
+	else
+	{
+		if (!parent_node)
+		{
+			m_root = left_node;
+			m_root->m_parent_node = nullptr;
+		}
+		else
+		{
+			if (parent_node->m_left_node == node) parent_node->m_left_node = left_node;
+			else parent_node->m_right_node = left_node;
+			left_node->m_parent_node = parent_node;
+		}
+		Node* right_most_node = left_node;
+		while (right_most_node->m_right_node) {
+			right_most_node = right_most_node->m_right_node;
+		}
+		right_most_node->m_right_node = right_node;
+		if (right_node) right_node->m_parent_node = right_most_node;
+
+		delete node;
+		m_size--;
+	}
+}

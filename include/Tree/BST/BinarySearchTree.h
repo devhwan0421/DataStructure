@@ -11,6 +11,9 @@ public:
 	Node* FindLocation(int key);
 	Node* Insert(int key);
 
+	Node* Search(int key);
+	void Remove(int key);
+
 	void RunTestCase();
 
 private:
