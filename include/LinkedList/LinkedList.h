@@ -1,8 +1,9 @@
 #pragma once
 #include "IDataStructure.h"
-#include "Node.h"
+#include "LinkedList/Node.h"
 #include <iostream>
 #include <optional>
+using Node = linkedlist::Node;
 
 class LinkedList : public IDataStructure {
 public:

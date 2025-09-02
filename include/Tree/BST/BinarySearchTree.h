@@ -1,7 +1,8 @@
 #pragma once
 #include "IDataStructure.h"
-#include "Node.h"
+#include "Tree/BST/Node.h"
 #include <iostream>
+using Node = bst::Node;
 
 class BST : public IDataStructure {
 public:
@@ -13,6 +14,9 @@ public:
 
 	Node* Search(int key);
 	void Remove(int key);
+
+	void DeleteByMerging(int key);
+	void DeleteByCopying(int key);
 
 	void RunTestCase();
 

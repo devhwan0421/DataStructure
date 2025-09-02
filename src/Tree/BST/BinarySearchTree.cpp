@@ -1,5 +1,11 @@
 #include "Tree/BST/BinarySearchTree.h"
 
+BST::BST() : m_root(nullptr), m_size(0) {}
+
+BST::~BST() {
+	//재귀와 반복으로 구현해 볼 것
+}
+
 Node* BST::FindLocation(int key) {
 	if (m_size == 0) return nullptr;
 	Node* parent_node = nullptr;
@@ -56,6 +62,12 @@ Node* BST::Search(int key) {
 }
 
 void BST::Remove(int key) {
+	//DeleteByMerging(key);
+	DeleteByCopying(key);
+	m_size--;
+}
+
+void BST::DeleteByMerging(int key) {
 	Node* node = FindLocation(key);
 	if (!node || node->m_key != key) return;
 
@@ -77,8 +89,6 @@ void BST::Remove(int key) {
 			if (right_node) right_node->m_parent_node = parent_node;
 		}
 		delete node;
-		m_size--;
-		return;
 	}
 	else
 	{
@@ -101,6 +111,50 @@ void BST::Remove(int key) {
 		if (right_node) right_node->m_parent_node = right_most_node;
 
 		delete node;
-		m_size--;
 	}
+}
+
+void BST::DeleteByCopying(int key) {
+	Node* node = FindLocation(key);
+	if (!node || node->m_key != key) return;
+
+	Node* left_node = node->m_left_node;
+	Node* right_node = node->m_right_node;
+
+	if (left_node && right_node)
+	{
+		Node* pred = left_node;
+		while (pred->m_right_node) pred = pred->m_right_node;
+
+		node->m_key = pred->m_key;
+
+		Node* pred_parent = pred->m_parent_node;	//이렇게 선언하니 코드가 간결해짐
+		Node* pred_left = pred->m_left_node;
+
+		if (pred_parent == node)	pred_parent->m_left_node = pred_left;
+		else						pred_parent->m_right_node = pred_left;
+		if (pred_left) pred_left->m_parent_node = pred_parent;
+		delete pred;
+	}
+	else
+	{
+		Node* parent_node = node->m_parent_node;
+		Node* child = left_node ? left_node : right_node;
+		if (m_root != node)
+		{
+			if (node == parent_node->m_left_node)	parent_node->m_left_node = child;
+			else									parent_node->m_right_node = child;
+			if (child) child->m_parent_node = parent_node;
+		}
+		else
+		{
+			m_root = child;
+			if(child) child->m_parent_node = nullptr;
+		}
+		delete node;
+	}
+}
+
+void BST::RunTestCase() {
+
 }
