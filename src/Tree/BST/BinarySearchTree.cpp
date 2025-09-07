@@ -1,9 +1,36 @@
 #include "Tree/BST/BinarySearchTree.h"
+#include <cassert>
+using namespace bst;
 
+//장
 BST::BST() : m_root(nullptr), m_size(0) {}
 
 BST::~BST() {
 	//재귀와 반복으로 구현해 볼 것
+	ClearByPostOrder();
+}
+
+void BST::ClearByPostOrder() {
+	Node* current_node = m_root;
+	if (!current_node) return;
+
+	while (current_node != nullptr) {
+		if (current_node->m_left_node) { current_node = current_node->m_left_node; continue; }
+		if (current_node->m_right_node) { current_node = current_node->m_right_node; continue; }
+
+		Node* parent_node = current_node->m_parent_node;
+		if (parent_node) {
+			if (parent_node->m_left_node == current_node)	parent_node->m_left_node = nullptr;
+			else											parent_node->m_right_node = nullptr;
+		}
+
+		delete current_node;
+		--m_size;
+		current_node = parent_node;
+	}
+	m_root = nullptr;
+	assert(m_size == 0);
+	m_size = 0;
 }
 
 Node* BST::FindLocation(int key) {
@@ -64,7 +91,6 @@ Node* BST::Search(int key) {
 void BST::Remove(int key) {
 	//DeleteByMerging(key);
 	DeleteByCopying(key);
-	m_size--;
 }
 
 void BST::DeleteByMerging(int key) {
@@ -112,6 +138,7 @@ void BST::DeleteByMerging(int key) {
 
 		delete node;
 	}
+	m_size--;
 }
 
 void BST::DeleteByCopying(int key) {
@@ -153,8 +180,19 @@ void BST::DeleteByCopying(int key) {
 		}
 		delete node;
 	}
+	m_size--;
 }
 
 void BST::RunTestCase() {
+	Insert(15);
+	Insert(4);
+	Insert(20);
+	Insert(2);
+	//     15
+	//   4    20
+	// 2
 
+	Remove(15);
+	//     4
+	//   2   20
 }

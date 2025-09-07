@@ -1,4 +1,5 @@
 #include "LinkedList/LinkedList.h"
+using namespace linkedlist;
 
 LinkedList::LinkedList() : m_head(nullptr), m_tail(nullptr), m_size(0){}
 
@@ -126,8 +127,8 @@ void LinkedList::Clear() {
 	m_size = 0;
 }
 
-std::optional<Node*> LinkedList::FindNode(int value) {
-	if (IsEmpty()) return std::nullopt;
+Node* LinkedList::FindNode(int value) {
+	if (IsEmpty()) return nullptr;
 	Node* tmp = m_head;
 	while (tmp) {
 		if (tmp->m_data == value)
@@ -136,7 +137,7 @@ std::optional<Node*> LinkedList::FindNode(int value) {
 		}
 		tmp = tmp->m_next_right;
 	}
-	return std::nullopt;
+	return nullptr;
 }
 
 std::optional<int> LinkedList::At(int index) {
@@ -196,10 +197,9 @@ void LinkedList::RunTestCase() {
 	PushBack(9);
 	Print();
 
-	std::optional<Node*> data = FindNode(8);
-	if (auto opt = FindNode(8); opt.has_value())
+	if (Node* data = FindNode(8))
 	{
-		printf("data : %d\n", opt.value()->m_data);
+		printf("data : %d\n", data->m_data);
 	}
 	else
 	{

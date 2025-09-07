@@ -9,9 +9,9 @@
 int main() {
 	//IDataStructure* dataStructure = new Stack();
 	//IDataStructure* dataStructure = new Queue();
-	//IDataStructure* dataStructure = new LinkedList();
+	//IDataStructure* dataStructure = new linkedlist::LinkedList();
 	//IDataStructure* dataStructure = new HashTable();
-	IDataStructure* dataStructure = new BST();
+	IDataStructure* dataStructure = new bst::BST();
 	dataStructure->RunTestCase();
 
 	return 0;

@@ -2,25 +2,27 @@
 #include "IDataStructure.h"
 #include "Tree/BST/Node.h"
 #include <iostream>
-using Node = bst::Node;
+namespace bst {
+	class BST : public IDataStructure {
+	public:
+		BST();
+		~BST();
 
-class BST : public IDataStructure {
-public:
-	BST();
-	~BST();
+		void ClearByPostOrder();
 
-	Node* FindLocation(int key);
-	Node* Insert(int key);
+		Node* FindLocation(int key);
+		Node* Insert(int key);
 
-	Node* Search(int key);
-	void Remove(int key);
+		Node* Search(int key);
+		void Remove(int key);
 
-	void DeleteByMerging(int key);
-	void DeleteByCopying(int key);
+		void DeleteByMerging(int key);
+		void DeleteByCopying(int key);
 
-	void RunTestCase();
+		void RunTestCase();
 
-private:
-	Node* m_root;
-	size_t m_size;
-};
+	private:
+		Node* m_root;
+		size_t m_size;
+	};
+}
